@@ -11,17 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.lakota.forum.entity.PostDTO;
+import pl.lakota.forum.entity.PostsContainer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @org.springframework.stereotype.Controller
 public class Controller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
+    private static final String FORUM_PAGE = "forum-page";
     private static final String WELCOME_PAGE = "welcome-page";
     private static final String MESSAGE_PAGE = "message-page";
-    private static final String FORUM_PAGE = "forum-page";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -43,12 +45,27 @@ public class Controller {
         if (resultFromUser.equals(result)) {
             String nick = user.getNickname();
             model.addAttribute("post", new PostDTO(nick));
-            return MESSAGE_PAGE;
+            return goToForumPage(model);
         } else {
             user.setCaptcha();
             model.addAttribute("user", user);
             return WELCOME_PAGE;
         }
+    }
+
+    private String goToForumPage(Model model) {
+        String sql = "SELECT * FROM Posts";
+        List<PostDTO> listOfPosts = jdbcTemplate.query(sql, (rs, rowNum) -> new PostDTO(rs.getString("Message"),
+                rs.getString("Nickname"), rs.getString("PostDate")));
+        model.addAttribute("postsContainer", new PostsContainer(listOfPosts));
+        //TODO Implement user nickname's uniqueness verification in order to prevent from displaying foreign posts.
+        return FORUM_PAGE;
+    }
+
+    @PostMapping("/goToSendMessagePage")
+    public String goToSendMessagePage(@ModelAttribute("post") PostDTO post, Model model) {
+        model.addAttribute("post", post);
+        return MESSAGE_PAGE;
     }
 
     @PostMapping("/sendMessage")
@@ -61,13 +78,6 @@ public class Controller {
             LOGGER.warn(exception.getMessage());
             //TODO Implement displaying exception message to user on the pop-up window
         }
-        return FORUM_PAGE;
-    }
-
-    @PostMapping("/displayMessages")
-    public void displayMessages(@ModelAttribute("post") User user, Model model) {
-        jdbcTemplate.execute("SELECT Posts.Nickname, Posts.Message, Posts.PostDate FROM Posts WHERE Posts.Nickname = '"
-                + user.getNickname() + "'");
-        //TODO Implement user nickname's uniqueness verification in order to prevent from displaying foreign posts.
+        return goToForumPage(model);
     }
 }
