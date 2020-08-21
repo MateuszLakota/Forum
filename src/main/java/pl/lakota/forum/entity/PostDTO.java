@@ -1,8 +1,10 @@
 package pl.lakota.forum.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 public class PostDTO {
 
     @Getter
@@ -17,7 +19,13 @@ public class PostDTO {
     @Setter
     private String postDate;
 
+    public PostDTO() {}
+
     public PostDTO(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getLabel() {
+        return this.nickname + ", " + this.postDate + ":";
     }
 }
