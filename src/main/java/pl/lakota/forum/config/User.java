@@ -3,20 +3,27 @@ package pl.lakota.forum.config;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class User {
 
-    public static Map<String, Integer> RIDDLES;
+    public static Map<String, Integer> CAPTCHAS;
 
     static {
-        RIDDLES = new HashMap<>();
-        RIDDLES.put("3^3 = ?", 27);
-        RIDDLES.put("2 * 3 = ?", 6);
-        RIDDLES.put("10 - 15 = ?", -5);
-        RIDDLES.put("20 + 20 = ?", 40);
-        RIDDLES.put("0 - 0 = ?", 0);
+        CAPTCHAS = new HashMap<>();
+        CAPTCHAS.put("3 ^ 3 = ?", 27);
+        CAPTCHAS.put("2 * 3 = ?", 6);
+        CAPTCHAS.put("10 - 15 = ?", -5);
+        CAPTCHAS.put("20 + 20 = ?", 40);
+        CAPTCHAS.put("0 - 0 = ?", 0);
     }
+
+    @Getter
+    @Setter
+    private String captcha;
 
     @Getter
     @Setter
@@ -24,22 +31,10 @@ public class User {
 
     @Getter
     @Setter
-    private String dateOfBirth;
+    private int resultOfCaptcha;
 
-    @Getter
-    @Setter
-    private int verificationResult;
-
-    @Getter
-    @Setter
-    private String riddle;
-
-    public void shuffleRiddle() {
+    public void setCaptcha() {
         int index = new Random().nextInt(5);
-        riddle = new ArrayList<>(RIDDLES.entrySet()).get(index).getKey();
-    }
-
-    public String getRiddle() {
-        return riddle;
+        this.captcha = new ArrayList<>(CAPTCHAS.entrySet()).get(index).getKey();
     }
 }
