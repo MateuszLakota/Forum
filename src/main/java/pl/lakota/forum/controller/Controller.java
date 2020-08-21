@@ -58,7 +58,6 @@ public class Controller {
         List<PostDTO> listOfPosts = jdbcTemplate.query(sql, (rs, rowNum) -> new PostDTO(rs.getString("Message"),
                 rs.getString("Nickname"), rs.getString("PostDate")));
         model.addAttribute("postsContainer", new PostsContainer(listOfPosts));
-        //TODO Implement user nickname's uniqueness verification in order to prevent from displaying foreign posts.
         return FORUM_PAGE;
     }
 
