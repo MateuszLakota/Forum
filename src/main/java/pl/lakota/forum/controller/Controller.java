@@ -16,10 +16,18 @@ import pl.lakota.forum.entity.PostsContainer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
+/*
+ * TODO Implement:
+ *  1) JUnit 5 unit tests to every method;
+ *  2) exception handling where required with the us of LOGGER;
+ *  3) displaying exception message to user on the pop-up window;
+ *  4) refresh button on forum page and implement method handling aforementioned buttton;
+ *  5) displaying message informing user about incorrect captcha with C namespace if.
+ */
 @org.springframework.stereotype.Controller
 public class Controller {
 
+    // TODO Create a field for every column's and table's name in Forum.Posts.
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
     private static final String FORUM_PAGE = "forum-page";
     private static final String WELCOME_PAGE = "welcome-page";
@@ -38,8 +46,8 @@ public class Controller {
 
     @PostMapping("/proceedToForum")
     public String proceedToForum(@ModelAttribute("user") User user, Model model) {
-        String riddle = user.getCaptcha();
-        Integer result = User.CAPTCHAS.get(riddle);
+        String captcha = user.getCaptcha();
+        Integer result = User.CAPTCHAS.get(captcha);
         Integer resultFromUser = user.getResultOfCaptcha();
 
         if (resultFromUser.equals(result)) {
@@ -54,9 +62,10 @@ public class Controller {
     }
 
     private String goToForumPage(Model model) {
-        String sql = "SELECT * FROM Posts";
-        List<PostDTO> listOfPosts = jdbcTemplate.query(sql, (rs, rowNum) -> new PostDTO(rs.getString("Message"),
-                rs.getString("Nickname"), rs.getString("PostDate")));
+        String select_query = "SELECT * FROM Posts";
+        List<PostDTO> listOfPosts = jdbcTemplate.query(select_query, (rs, rowNum) -> new PostDTO(
+                rs.getString("Message"), rs.getString("Nickname"),
+                rs.getString("PostDate")));
         model.addAttribute("postsContainer", new PostsContainer(listOfPosts));
         return FORUM_PAGE;
     }
@@ -75,7 +84,6 @@ public class Controller {
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "')");
         } catch (DataAccessException exception) {
             LOGGER.warn(exception.getMessage());
-            //TODO Implement displaying exception message to user on the pop-up window
         }
         return goToForumPage(model);
     }
