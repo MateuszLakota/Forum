@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Forum</title>
@@ -21,6 +22,14 @@
         <form:input path="captcha" id="captcha" class="form-control" type="hidden"/>
         <input type="submit" value="Proceed to forum" class="btn btn-primary btn-block"/>
     </form:form>
+    <c:choose>
+        <c:when test="${user.shouldDisplayAlertWindow}">
+            <script>
+                alert("Incorrect captcha. Try again.");
+            </script>
+        </c:when>
+    </c:choose>
+
 </div>
 </body>
 </html>

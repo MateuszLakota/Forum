@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
 // TODO Remove obsolete @Getter and @Setter annotations.
 public class User {
     // TODO Alter the access modifier of CAPTCHAS to private, set it to final and create getter method.
@@ -32,6 +33,10 @@ public class User {
     @Getter
     @Setter
     private int resultOfCaptcha;
+
+    @Getter
+    @Setter
+    private boolean shouldDisplayAlertWindow;
 
     public void setCaptcha() {
         int index = new Random().nextInt(5);

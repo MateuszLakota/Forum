@@ -16,14 +16,15 @@ import pl.lakota.forum.entity.PostsContainer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 /*
- * TODO Implement:
- *  1) JUnit 5 unit tests to every method;
- *  2) exception handling where required with the us of LOGGER;
- *  3) displaying exception message to user on the pop-up window;
- *  4) refresh button on forum page and implement method handling aforementioned buttton;
- *  5) displaying message informing user about incorrect captcha with C namespace if.
+ * TODO:
+ *  1) unit test to every method;
+ *  2) exception handling where required with the use of LOGGER;
+ *  3) displaying exception message to user in the pop-up window;
+ *  4) refresh button on Forum page and implement method handling aforementioned button.
  */
+
 @org.springframework.stereotype.Controller
 public class Controller {
 
@@ -55,6 +56,7 @@ public class Controller {
             model.addAttribute("post", new PostDTO(nick));
             return goToForumPage(model);
         } else {
+            user.setShouldDisplayAlertWindow(true);
             user.setCaptcha();
             model.addAttribute("user", user);
             return WELCOME_PAGE;
@@ -62,8 +64,8 @@ public class Controller {
     }
 
     private String goToForumPage(Model model) {
-        String select_query = "SELECT * FROM Posts";
-        List<PostDTO> listOfPosts = jdbcTemplate.query(select_query, (rs, rowNum) -> new PostDTO(
+        String query = "SELECT * FROM Posts";
+        List<PostDTO> listOfPosts = jdbcTemplate.query(query, (rs, rowNum) -> new PostDTO(
                 rs.getString("Message"), rs.getString("Nickname"),
                 rs.getString("PostDate")));
         model.addAttribute("postsContainer", new PostsContainer(listOfPosts));
