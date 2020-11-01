@@ -1,5 +1,6 @@
 package pl.lakota.forum.controller;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.lakota.forum.entity.PostDTO;
 import pl.lakota.forum.entity.PostsContainer;
+import pl.lakota.forum.service.DatabaseService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,11 +66,8 @@ public class Controller {
     }
 
     private String goToForumPage(Model model) {
-        String query = "SELECT * FROM Posts";
-        List<PostDTO> listOfPosts = jdbcTemplate.query(query, (rs, rowNum) -> new PostDTO(
-                rs.getString("Message"), rs.getString("Nickname"),
-                rs.getString("PostDate")));
-        model.addAttribute("postsContainer", new PostsContainer(listOfPosts));
+        List<PostDTO> posts = DatabaseService.getImplementation().retrievePosts(jdbcTemplate);
+        model.addAttribute("postsContainer", new PostsContainer(posts));
         return FORUM_PAGE;
     }
 
