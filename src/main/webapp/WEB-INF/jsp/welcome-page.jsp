@@ -23,13 +23,17 @@
         <input type="submit" value="Proceed to forum" class="btn btn-primary btn-block"/>
     </form:form>
     <c:choose>
-        <c:when test="${user.shouldDisplayAlertWindow}">
+        <c:when test="${user.shouldDisplayBlankNicknameAlertWindow}">
+            <script>
+                alert("Please enter a nickname.");
+            </script>
+        </c:when>
+        <c:when test="${user.shouldDisplayIncorrectCaptchaAlertWindow}">
             <script>
                 alert("Incorrect captcha. Try again.");
             </script>
         </c:when>
     </c:choose>
-
 </div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package pl.lakota.forum.controller;
 
-import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,18 +52,22 @@ public class Controller {
         Integer result = User.CAPTCHAS.get(captcha);
         Integer resultFromUser = user.getResultOfCaptcha();
 
-        if (resultFromUser.equals(result)) {
-            String nick = user.getNickname();
-            model.addAttribute("post", new PostDTO(nick));
+        if (resultFromUser.equals(result) && !user.getNickname().isBlank()) {
+            String usersNickname = user.getNickname();
+            model.addAttribute("post", new PostDTO(usersNickname));
             return goToForumPage(model);
+        } else if (user.getNickname().isBlank()) {
+            user.setShouldDisplayBlankNicknameAlertWindow(true);
         } else {
-            user.setShouldDisplayAlertWindow(true);
-            user.setCaptcha();
-            model.addAttribute("user", user);
-            return WELCOME_PAGE;
+            user.setShouldDisplayIncorrectCaptchaAlertWindow(true);
         }
+
+        user.setCaptcha();
+        model.addAttribute("user", user);
+        return WELCOME_PAGE;
     }
 
+    @PostMapping("/goToForumPage")
     private String goToForumPage(Model model) {
         List<PostDTO> posts = DatabaseService.getImplementation().retrievePosts(jdbcTemplate);
         model.addAttribute("postsContainer", new PostsContainer(posts));

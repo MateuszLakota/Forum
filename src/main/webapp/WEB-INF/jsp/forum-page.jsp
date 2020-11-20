@@ -18,6 +18,9 @@
             <form:input path="nickname" id="nickname" class="form-control" type="hidden"/>
             <input type="submit" value="Post message" class="btn btn-primary btn-block"/>
         </form:form>
+        <form:form action="goToForumPage" method="post">
+            <input type="submit" value="Refresh discussion forum page" class="btn btn-primary btn-block"/>
+        </form:form>
     </div>
 </body>
 </html>

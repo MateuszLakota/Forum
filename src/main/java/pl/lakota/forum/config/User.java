@@ -36,7 +36,11 @@ public class User {
 
     @Getter
     @Setter
-    private boolean shouldDisplayAlertWindow;
+    private boolean shouldDisplayBlankNicknameAlertWindow;
+
+    @Getter
+    @Setter
+    private boolean shouldDisplayIncorrectCaptchaAlertWindow;
 
     public void setCaptcha() {
         int index = new Random().nextInt(5);
