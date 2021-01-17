@@ -23,7 +23,7 @@ import java.util.List;
  *  1) unit test to every method;
  *  2) exception handling where required with the use of LOGGER;
  *  3) displaying exception message to user in the pop-up window;
- *  4) refresh button on Forum page and implement method handling aforementioned button.
+ *  4) fix a bug regarding incomplete forum page after using "Refresh discussion forum page" button.
  */
 
 @org.springframework.stereotype.Controller
@@ -32,8 +32,8 @@ public class Controller {
     // TODO Create a field for every column's and table's name in Forum.Posts.
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
     private static final String FORUM_PAGE = "forum-page";
-    private static final String WELCOME_PAGE = "welcome-page";
-    private static final String MESSAGE_PAGE = "message-page";
+    static final String WELCOME_PAGE = "welcome-page";
+    static final String MESSAGE_PAGE = "message-page";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
