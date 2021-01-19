@@ -8,13 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-// TODO Remove obsolete @Getter and @Setter annotations.
 public class User {
-    // TODO Alter the access modifier of CAPTCHAS to private, set it to final and create getter method.
-    public static Map<String, Integer> CAPTCHAS;
+    @Getter
+    private final static Map<String, Integer> CAPTCHAS = new HashMap<>();
 
     static {
-        CAPTCHAS = new HashMap<>();
         CAPTCHAS.put("3 ^ 3 = ?", 27);
         CAPTCHAS.put("2 * 3 = ?", 6);
         CAPTCHAS.put("10 - 15 = ?", -5);
@@ -42,7 +40,7 @@ public class User {
     @Setter
     private boolean shouldDisplayIncorrectCaptchaAlertWindow;
 
-    public void setCaptcha() {
+    public void drawPseudorandomCaptcha() {
         int index = new Random().nextInt(5);
         this.captcha = new ArrayList<>(CAPTCHAS.entrySet()).get(index).getKey();
     }

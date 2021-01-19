@@ -26,6 +26,7 @@ class ControllerTest {
     void getWelcomePage_testUserSetCaptchaMethod() {
         Model mockModel = Mockito.mock(Model.class);
         underTest.getWelcomePage(mockModel);
+
     }
 
     @Test
@@ -41,7 +42,7 @@ class ControllerTest {
     void getWelcomePage_testReturnValue() {
         Model mockModel = Mockito.mock(Model.class);
         String welcomePageString = underTest.getWelcomePage(mockModel);
-        Assertions.assertEquals(Controller.WELCOME_PAGE, welcomePageString);
+        Assertions.assertEquals(Controller.getWELCOME_PAGE(), welcomePageString);
     }
 
     @Test
@@ -51,7 +52,7 @@ class ControllerTest {
         User mockUser = Mockito.mock(User.class);
         Mockito.when(mockUser.getNickname()).thenReturn("Mock nickname.");
         String welcomePage = underTest.proceedToForum(mockUser, mockModel);
-        Assertions.assertEquals(Controller.WELCOME_PAGE, welcomePage);
+        Assertions.assertEquals(Controller.getWELCOME_PAGE(), welcomePage);
     }
 
     @Test
@@ -69,21 +70,35 @@ class ControllerTest {
         Model mockModel = Mockito.mock(Model.class);
         PostDTO mockPostDTO = Mockito.mock(PostDTO.class);
         String messagePage = underTest.goToSendMessagePage(mockPostDTO, mockModel);
-        Assertions.assertEquals(Controller.MESSAGE_PAGE, messagePage);
+        Assertions.assertEquals(Controller.getMESSAGE_PAGE(), messagePage);
     }
 
     //@Test
-    @Description("Test whether insert query has been executed.")
-    void sendMessage_testSQLInsertQuery() {
-
-    }
-
-    //@Test
-    @Description("Test whether goToForumPage method has been invoked.")
-    void sendMessage_testGoToForumPageMethod() {
+    @Description("Test whether INSERT query with the use of JdbcTemplate has been executed.")
+    void sendMessage_testExecuteMethod() {
         Model mockModel = Mockito.mock(Model.class);
         PostDTO mockPostDTO = Mockito.mock(PostDTO.class);
+        Mockito.when(mockPostDTO.getNickname()).thenReturn("Mock nickname.");
+        Mockito.when(mockPostDTO.getMessage()).thenReturn("Mock post");
         underTest.sendMessage(mockPostDTO, mockModel);
-        Mockito.verify(mockModel, Mockito.times(1)).addAttribute(Mockito.eq("post"), Mockito.any());
+
+    }
+
+    //@Test
+    @Description("Test whether data access exception has been thrown by execute method.")
+    void sendMessage_testIsDataAccessExceptionThrown() {
+
+    }
+
+    @Test
+    @Description("Test whether MESSAGE_PAGE has been returned.")
+    void sendMessage_testReturnValue() {
+        Model mockModel = Mockito.mock(Model.class);
+        PostDTO mockPostDTO = Mockito.mock(PostDTO.class);
+        Mockito.when(mockPostDTO.getNickname()).thenReturn("Mock nickname.");
+        Mockito.when(mockPostDTO.getMessage()).thenReturn("Mock post");
+        underTest.sendMessage(mockPostDTO, mockModel);
+        String messagePage = underTest.goToSendMessagePage(mockPostDTO, mockModel);
+        Assertions.assertEquals(Controller.getMESSAGE_PAGE(), messagePage);
     }
 }

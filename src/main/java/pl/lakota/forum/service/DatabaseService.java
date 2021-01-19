@@ -1,6 +1,5 @@
 package pl.lakota.forum.service;
 
-import org.springframework.boot.system.SystemProperties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;

@@ -9,10 +9,11 @@ import java.util.List;
 
 @Service
 public class MockDatabaseService implements DatabaseService {
+
     @Override
     public List<PostDTO> retrievePosts(JdbcTemplate jdbcTemplate) { // argument will be ignored
-        return Arrays.asList(new PostDTO("osas", "werbasdbr", "2020-10-30"),
-                new PostDTO("łotIsJorNejm", "człowiek w błocie", "2020-10-29"),
-                new PostDTO("Kamegen", "jejmołtrab", "2020-10-28"));
+        return Arrays.asList(new PostDTO("Mock message 1.", "Mock nickname 1.", "1970-01-01"),
+                new PostDTO("Mock message 2.", "Mock nickname 2.", "2000-01-01"),
+                new PostDTO("Mock message 3.", "Mock nickname 3.", "2020-01-01"));
     }
 }

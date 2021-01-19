@@ -2,10 +2,11 @@ package pl.lakota.forum.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// TODO Remove obsolete @Getter and @Setter annotations.
 @AllArgsConstructor
+@NoArgsConstructor
 public class PostDTO {
 
     @Getter
@@ -15,13 +16,7 @@ public class PostDTO {
     @Getter
     @Setter
     private String nickname;
-
-    @Getter
-    @Setter
     private String postDate;
-
-    public PostDTO() {
-    }
 
     public PostDTO(String nickname) {
         this.nickname = nickname;
